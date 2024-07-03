@@ -136,3 +136,145 @@ cat /proc/dma
  4: cascade
 
 #O sistema básico de entrada e saida (BIOS)
+
+BIOS
+
+Ao ligar a máquina, o Basic Input-Output System realiza uma série de testes, como a verificação do sistema básico de entrada e saída, memória, drivers, etc. Este procedimento é conhecido
+como POST (Power-on Self-Test)
+É importante ressaltar que o BIOS, sendo uma tecnologia antiga, somente consegue realizar o boot do sistema utilizando partições de até 2 TB. 
+Essa limitação é imposta pelo esquema de particionamento conhecido como MBR (Master Boot Record). 
+
+Tarefas importantes:
+    - Ordem de leitura dos dispositivos de armazenamento em massa
+    - Habilitar e desabilitar periféricos
+    - Configuração do relógio do sistema
+
+UEFI
+Em placas-mãe mais modernas, podemos encontrar a evolução natural do BIOS, conhecida como UEFI (Unified Extensible Firmware Interface) ou também EFI. 
+Esse firmware consegue inicializar sistemas em dispositivos com mais de 2 TB de tamanho de partição, pois utiliza o esquema de particionamento GPT.
+
+
+#LSCPU, LSCPU, LSUSB
+
+LSCPU
+
+Utilizado para visualizar diversas informações sobre a CPU do sistema (arquitetura, fabricante, modelo, etc)
+Busca as informações contidas no /proc/cpuinfo, bem como em arquivos presentes no /sys
+
+lscpu
+Architecture:             x86_64
+  CPU op-mode(s):         32-bit, 64-bit
+  Address sizes:          48 bits physical, 48 bits virtual
+  Byte Order:             Little Endian
+CPU(s):                   16
+  On-line CPU(s) list:    0-15
+Vendor ID:                AuthenticAMD
+  Model name:             AMD Ryzen 7 5700X 8-Core Processor
+
+LSPCI
+
+Responsável por mostrar informações sobre barramentos PCI, bem como dispositivos conectados a eles.
+
+Principais argumentos:
+    - v: Modo detalhado
+    - vv: Modo mais detalhado
+    - vvv: Modo super detalhado
+    - s: Mostra as informações sobre um dispositivo em especifico
+    - t: Apresenta o resultado em forma de árvore
+    - n: mostra os códigos do fabricante
+
+lspci
+00:00.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse Root Complex
+00:00.2 IOMMU: Advanced Micro Devices, Inc. [AMD] Starship/Matisse IOMMU
+00:01.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+00:01.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge
+00:01.2 PCI bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge
+00:02.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+00:03.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+00:03.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge
+00:04.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+00:05.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+00:07.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+00:07.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse Internal PCIe GPP Bridge 0 to bus[E:B]
+00:08.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge
+03:0a.0 PCI bridge: Advanced Micro Devices, Inc. [AMD] Matisse PCIe GPP Bridge
+
+Utilizando o ultimo como exemplo:
+    - 03: número do barramento
+    - 0a: número do dispositivo/slot
+    - 0: número da função do dispositivo
+    - PCI bridge: Classe do dispositivo
+    - PCI bridge: Advanced Micro Devices, Inc. [AMD] Matisse PCIe GPP Bridge: Representação do dispositivo
+
+Para analisar informações mais detalhadas, incluindo o IRQ, utilizamos o comando lspci -vs ID
+
+lspci -vs 09:00.0 
+09:00.0 VGA compatible controller: NVIDIA Corporation GA104 [GeForce RTX 3070 Ti] (rev a1) (prog-if 00 [VGA controller])
+        Subsystem: NVIDIA Corporation GA104 [GeForce RTX 3070 Ti]
+        Flags: bus master, fast devsel, latency 0, IRQ 151, IOMMU group 23
+        Memory at fb000000 (32-bit, non-prefetchable) [size=16M]
+        Memory at d0000000 (64-bit, prefetchable) [size=256M]
+        Memory at e0000000 (64-bit, prefetchable) [size=32M]
+        I/O ports at e000 [size=128]
+        Expansion ROM at fc000000 [virtual] [disabled] [size=512K]
+        Capabilities: <access denied>
+        Kernel driver in use: nvidia
+        Kernel modules: nvidiafb, nouveau, nvidia_drm, nvidia
+
+LSUSB
+
+Permite visualizar informações sobre dispositivos barramento USB, bem como dispositivos conectados a eles.
+
+Principais argumentos:
+    - v: Modo detalhado
+    - d: Exibe informações do dispositivo especificado
+    - t: Apresenta o resultado em forma de árvore
+
+lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 1e71:2007 NZXT NZXT USB Device
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 002: ID 0b05:18f3 ASUSTek Computer, Inc. AURA LED Controller
+Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 005 Device 002: ID 258a:0016 BY Tech Usb Gaming Keyboard
+Bus 005 Device 003: ID 046d:0a89 Logitech, Inc. G635 Gaming Headset
+Bus 005 Device 004: ID 045e:0b12 Microsoft Corp. Xbox Controller
+Bus 005 Device 005: ID 04d9:fc38 Holtek Semiconductor, Inc. Gaming Mouse [Redragon M602-RGB]
+Bus 006 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+
+#Manipulação dos módulos do kernel
+
+O kernel possui diversas responsabilidades no funcionamento do sistema como um todo (gestão de hardware, segurança, manipulação de processos, serviços, etc). Por isso é considerado o coraçã do sistema.
+Para visualizarmos a versão do kernel em execução, podemos utilizar o comando uname
+
+uname -r
+6.8.0-35-generic
+
+O kernel trabalha constantemente com módulos(geralmente armazenados no dirétório /lib/modules/versãokernel). Estes são drivers que servem para controlar hardware e intergir com componentes de software.
+
+lsmod
+
+Reponsável por formatar o conteudo do arquivo /proc/modules, mostrando assim uma lista dos módulos do kernel que estão atualmente carregados no sistema.
+
+lsmod
+Module                  Size  Used by
+btrfs                2019328  0
+blake2b_generic        24576  0
+xor                    20480  1 btrfs
+raid6_pq              126976  1 btrfs
+ufs                   126976  0
+qnx4                   12288  0
+
+Na primeira coluna encontra-se o nome do módulo, após o seu espaç ocupado em memória, e por ultimoo quantos módulos estão utilizando aquele módulo.
+
+Modprobe
+
+Possibilita a opção de desabilitar ou habilitar modulos do kernel.
+Para remover:
+    - modprobe -r $modulo
+Para adicionar:
+    - modbprobe $modulo
+Para visualizar as dependencias:
+    - --show-depends
