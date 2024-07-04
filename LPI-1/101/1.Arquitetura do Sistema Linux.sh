@@ -15,7 +15,7 @@ Transferencias de dados em séries
 Dispositivos SATAs podem ser trocados com o computador ligado - recurso conhecido como hot-swap.
 Discos SATA - SCSI, SAS, USB, SDD
     /dev/sda: Representa o primeiro dispositivo. Suas particições são reconhecidas como /dev/sda/, /dev/sdb, ...
-    dev/sdb: Representa o segundo dispositivo. Suas partições são reconhecidas da mesma forma que os anteriores.
+    /dev/sdb: Representa o segundo dispositivo. Suas partições são reconhecidas da mesma forma que os anteriores.
     /dev/sdc: Representa o terceiro dispositivo. Suas partições são reconhecidas da mesma forma que os anteriores.
     /dev/sdd: Representa o quarto dispositivo. Suas partições são reconhecidas da mesma forma que os anteriores.
 

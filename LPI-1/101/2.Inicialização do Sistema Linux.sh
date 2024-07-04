@@ -15,7 +15,7 @@ BIOS: é divida em duas etapas:
     realiza a busca pela partição considerada como "ativa" na tabela de particições MBR nos próximos 64 bytes.
     Esta partição contém o carregador de boot de segundo estágio. Quando o bootstrap encontra essa partição, carrega as instruções contidas na memória, para prosseguir para segunda etapa.
     - Segunda: Quando o carregador de boot de segundo estágio é acionado, ele busca o arquivo referente ao carregador de boot principal e definido para ser utilizado no sistema, como o GRUB.
-    A partir dai, este assume o controle doo processo de inicialização.
+    A partir dai, este assume o controle do processo de inicialização.
 
 UEFI: Após ser encontrada a particição ESP, o bootloader é carregado na memória.
 
